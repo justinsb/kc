@@ -1,0 +1,16 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "defaultfactory.go",
+        "factory.go",
+        "namespace.go",
+    ],
+    importpath = "kope.io/kc/pkg/cmd",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/k8s.io/client-go/kubernetes:go_default_library",
+        "//vendor/k8s.io/client-go/tools/clientcmd:go_default_library",
+    ],
+)

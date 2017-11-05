@@ -1,0 +1,31 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "main.go",
+        "namespace.go",
+        "root.go",
+        "utils.go",
+    ],
+    importpath = "kope.io/kc/cmd/kc",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//pkg/cmd:go_default_library",
+        "//vendor/github.com/spf13/cobra:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "cli",
+    importpath = "kope.io/auth/cmd/cli",
+    library = ":go_default_library",
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "kc",
+    importpath = "kope.io/kc/cmd/kc",
+    library = ":go_default_library",
+    visibility = ["//visibility:public"],
+)
