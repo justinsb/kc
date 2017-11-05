@@ -15,7 +15,7 @@ var (
 	namespace_short = shortDescription(`namespace <namespace>`)
 )
 
-func NewCmdNamespace(f cmd.Factory, out io.Writer) *cobra.Command {
+func NewCmdNamespace(f cmd.Factory, out io.Writer, stderr io.Writer) *cobra.Command {
 	options := &cmd.NamespaceOptions{}
 
 	cmd := &cobra.Command{

@@ -25,12 +25,16 @@ func homeDir() string {
 	return os.Getenv("USERPROFILE") // windows
 }
 
-func NewCmdRoot(out io.Writer) *cobra.Command {
+func NewCmdRoot(out io.Writer, stderr io.Writer) *cobra.Command {
 	options := &cmd.FactoryOptions{}
 
 	home := homeDir()
 	if home != "" {
 		options.Kubeconfig = filepath.Join(home, ".kube", "config")
+	}
+
+	if os.Getenv("KUBECONFIG") != "" {
+		options.Kubeconfig = os.Getenv("KUBECONFIG")
 	}
 
 	f := cmd.NewDefaultFactory(options)
@@ -47,7 +51,9 @@ func NewCmdRoot(out io.Writer) *cobra.Command {
 
 	// create subcommands
 	//cmd.AddCommand(NewCmdCompletion(f, out))
-	cmd.AddCommand(NewCmdNamespace(f, out))
+	cmd.AddCommand(NewCmdNamespace(f, out, stderr))
+	cmd.AddCommand(NewCmdGet(f, out, stderr))
+	cmd.AddCommand(NewCmdLogs(f, out, stderr))
 
 	return cmd
 }

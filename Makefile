@@ -12,6 +12,8 @@ gofmt:
 .PHONY: gazelle
 gazelle:
 	bazel run //:gazelle
+	git checkout -- vendor/
+	git clean -df vendor/
 
 .PHONY: dep
 dep:

@@ -21,7 +21,7 @@ func Execute() {
 	goflag.Set("logtostderr", "true")
 	goflag.CommandLine.Parse([]string{})
 
-	c := NewCmdRoot(os.Stdout)
+	c := NewCmdRoot(os.Stdout, os.Stderr)
 
 	if err := c.Execute(); err != nil {
 		exitWithError(err)
