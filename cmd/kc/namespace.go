@@ -43,7 +43,7 @@ func complete(cmd *cobra.Command, o *cmd.NamespaceOptions) error {
 		return helpErrorf(cmd, "Unexpected args: %v", args)
 	}
 
-	if len(args) > 1 {
+	if len(args) >= 1 {
 		o.Namespace = args[0]
 	}
 
