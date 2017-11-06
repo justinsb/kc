@@ -12,10 +12,6 @@ type NamespaceOptions struct {
 }
 
 func RunNamespace(f Factory, out io.Writer, o *NamespaceOptions) error {
-	if len(o.Namespace) == 0 {
-		return fmt.Errorf("you must specify a non-empty namespace name")
-	}
-
 	configAccess, err := f.ConfigAccess()
 	if err != nil {
 		return err
@@ -35,6 +31,13 @@ func RunNamespace(f Factory, out io.Writer, o *NamespaceOptions) error {
 	if !exists {
 		return fmt.Errorf("no configuration is currently active in your configuration")
 	}
+
+	if len(o.Namespace) == 0 {
+		// Print current namespace
+		_, err := fmt.Fprint(out, startingStanza.Namespace+"\n")
+		return err
+	}
+
 	context := *startingStanza
 	context.Namespace = o.Namespace
 	config.Contexts[contextName] = &context

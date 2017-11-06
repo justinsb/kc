@@ -39,10 +39,13 @@ func NewCmdNamespace(f cmd.Factory, out io.Writer, stderr io.Writer) *cobra.Comm
 
 func complete(cmd *cobra.Command, o *cmd.NamespaceOptions) error {
 	args := cmd.Flags().Args()
-	if len(args) != 1 {
+	if len(args) > 2 {
 		return helpErrorf(cmd, "Unexpected args: %v", args)
 	}
 
-	o.Namespace = args[0]
+	if len(args) > 1 {
+		o.Namespace = args[0]
+	}
+
 	return nil
 }

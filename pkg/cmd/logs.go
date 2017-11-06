@@ -31,28 +31,9 @@ func RunLogs(ctx context.Context, f Factory, out io.Writer, o *LogsOptions) erro
 		return err
 	}
 
-	configAccess, err := f.ConfigAccess()
+	namespace, err := getNamespace(f)
 	if err != nil {
 		return err
-	}
-
-	configs, err := configAccess.GetStartingConfig()
-	if err != nil {
-		return err
-	}
-
-	if configs.CurrentContext == "" {
-		return fmt.Errorf("current-context not set")
-	}
-
-	context := configs.Contexts[configs.CurrentContext]
-	if context == nil {
-		return fmt.Errorf("context %q not found", configs.CurrentContext)
-	}
-
-	namespace := context.Namespace
-	if namespace == "" {
-		namespace = "default"
 	}
 
 	pod, err := clientset.CoreV1().Pods(namespace).Get(o.Name, meta_v1.GetOptions{})
@@ -102,6 +83,8 @@ func RunLogs(ctx context.Context, f Factory, out io.Writer, o *LogsOptions) erro
 		wg.Add(1)
 
 		prefix := pod.Name + ": "
+		prefix = "\033[32m" + prefix + "\033[0m"
+
 		go func(prefix string) {
 			_ = pipeLogs(ctx, logsRequest, prefix, out)
 			wg.Done()
@@ -150,4 +133,33 @@ func pipeLogs(ctx context.Context, req *rest.Request, prefix string, out io.Writ
 	}
 
 	return nil
+}
+
+func getNamespace(f Factory) (string, error) {
+
+	configAccess, err := f.ConfigAccess()
+	if err != nil {
+		return "", err
+	}
+
+	configs, err := configAccess.GetStartingConfig()
+	if err != nil {
+		return "", err
+	}
+
+	if configs.CurrentContext == "" {
+		return "", fmt.Errorf("current-context not set")
+	}
+
+	context := configs.Contexts[configs.CurrentContext]
+	if context == nil {
+		return "", fmt.Errorf("context %q not found", configs.CurrentContext)
+	}
+
+	namespace := context.Namespace
+	if namespace == "" {
+		namespace = "default"
+	}
+
+	return namespace, nil
 }

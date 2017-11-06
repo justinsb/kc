@@ -50,7 +50,7 @@ func NewCmdRoot(out io.Writer, stderr io.Writer) *cobra.Command {
 	cmd.PersistentFlags().StringVar(&options.Kubeconfig, "kubeconfig", options.Kubeconfig, "Path to the kubeconfig file to use for CLI requests.")
 
 	// create subcommands
-	//cmd.AddCommand(NewCmdCompletion(f, out))
+	cmd.AddCommand(NewCmdCompletion(f, out))
 	cmd.AddCommand(NewCmdNamespace(f, out, stderr))
 	cmd.AddCommand(NewCmdGet(f, out, stderr))
 	cmd.AddCommand(NewCmdLogs(f, out, stderr))
