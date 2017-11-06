@@ -9,6 +9,7 @@ go_library(
         "main.go",
         "namespace.go",
         "root.go",
+        "ssh.go",
         "utils.go",
     ],
     importpath = "kope.io/kc/cmd/kc",

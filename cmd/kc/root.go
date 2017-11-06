@@ -54,6 +54,7 @@ func NewCmdRoot(out io.Writer, stderr io.Writer) *cobra.Command {
 	cmd.AddCommand(NewCmdNamespace(f, out, stderr))
 	cmd.AddCommand(NewCmdGet(f, out, stderr))
 	cmd.AddCommand(NewCmdLogs(f, out, stderr))
+	cmd.AddCommand(NewCmdSsh(f, out, stderr))
 
 	return cmd
 }

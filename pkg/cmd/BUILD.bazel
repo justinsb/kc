@@ -9,6 +9,7 @@ go_library(
         "logs.go",
         "namespace.go",
         "run.go",
+        "ssh.go",
     ],
     importpath = "kope.io/kc/pkg/cmd",
     visibility = ["//visibility:public"],

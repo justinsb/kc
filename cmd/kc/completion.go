@@ -82,6 +82,7 @@ func RunCompletion(f cmd.Factory, c *cobra.Command, args []string, out io.Writer
 			"namespace",
 			"logs",
 			"get",
+			"ssh",
 		}
 
 		prefix := ""
@@ -111,6 +112,12 @@ func RunCompletion(f cmd.Factory, c *cobra.Command, args []string, out io.Writer
 				prefix = words[2]
 			}
 			completions, err = cmd.CompletePods(f, prefix)
+		case "ssh":
+			prefix := ""
+			if len(words) >= 3 {
+				prefix = words[2]
+			}
+			completions, err = cmd.CompleteNodes(f, prefix)
 		}
 	}
 

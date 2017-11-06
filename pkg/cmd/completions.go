@@ -28,6 +28,27 @@ func CompleteNamespaces(f Factory, prefix string) ([]string, error) {
 	return matches, nil
 }
 
+func CompleteNodes(f Factory, prefix string) ([]string, error) {
+	clientset, err := f.Clientset()
+	if err != nil {
+		return nil, err
+	}
+
+	list, err := clientset.CoreV1().Nodes().List(meta_v1.ListOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	var matches []string
+	for _, n := range list.Items {
+		if strings.HasPrefix(n.Name, prefix) {
+			matches = append(matches, n.Name)
+		}
+	}
+
+	return matches, nil
+}
+
 func CompletePods(f Factory, prefix string) ([]string, error) {
 	clientset, err := f.Clientset()
 	if err != nil {
